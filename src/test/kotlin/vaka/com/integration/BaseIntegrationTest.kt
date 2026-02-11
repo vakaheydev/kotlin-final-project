@@ -1,4 +1,4 @@
-package org.example.integration
+package vaka.com.integration
 
 import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.utility.DockerImageName

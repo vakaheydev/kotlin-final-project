@@ -1,8 +1,8 @@
-package org.example.service
+package vaka.com.service
 
 import kotlinx.serialization.json.Json
-import org.example.data.repository.ProductRepository
-import org.example.domain.Product
+import vaka.com.data.repository.ProductRepository
+import vaka.com.domain.Product
 import java.math.BigDecimal
 
 class ProductService(

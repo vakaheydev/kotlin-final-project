@@ -1,11 +1,11 @@
-package org.example.service
+package vaka.com.service
 
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.example.data.repository.UserRepository
-import org.example.domain.User
-import org.example.domain.UserRole
+import vaka.com.data.repository.UserRepository
+import vaka.com.domain.User
+import vaka.com.domain.UserRole
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

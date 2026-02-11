@@ -1,10 +1,10 @@
-package org.example.service
+package vaka.com.service
 
 import io.mockk.*
-import org.example.data.repository.AuditLogRepository
-import org.example.data.repository.OrderRepository
-import org.example.data.repository.ProductRepository
-import org.example.domain.*
+import vaka.com.data.repository.AuditLogRepository
+import vaka.com.data.repository.OrderRepository
+import vaka.com.data.repository.ProductRepository
+import vaka.com.domain.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue

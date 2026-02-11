@@ -1,10 +1,10 @@
-package org.example.integration
+package vaka.com.integration
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import org.example.data.repository.UserRepository
-import org.example.data.tables.Users
-import org.example.domain.UserRole
+import vaka.com.data.repository.UserRepository
+import vaka.com.data.tables.Users
+import vaka.com.domain.UserRole
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

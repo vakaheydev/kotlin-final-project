@@ -1,12 +1,12 @@
-package org.example.routes
+package vaka.com.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.example.config.userId
-import org.example.service.ProductService
+import vaka.com.config.userId
+import vaka.com.service.ProductService
 
 fun Route.productRoutes(productService: ProductService) {
     route("/products") {

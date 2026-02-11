@@ -1,11 +1,11 @@
-package org.example.config
+package vaka.com.config
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import org.example.domain.UserRole
+import vaka.com.domain.UserRole
 
 fun Application.configureSecurity() {
     val config = environment.config

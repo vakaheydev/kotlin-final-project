@@ -1,4 +1,4 @@
-package org.example.routes
+package vaka.com.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -6,9 +6,9 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.example.config.userId
-import org.example.domain.CreateOrderRequest
-import org.example.service.OrderService
+import vaka.com.config.userId
+import vaka.com.domain.CreateOrderRequest
+import vaka.com.service.OrderService
 
 fun Route.orderRoutes(orderService: OrderService) {
     authenticate("auth-jwt") {

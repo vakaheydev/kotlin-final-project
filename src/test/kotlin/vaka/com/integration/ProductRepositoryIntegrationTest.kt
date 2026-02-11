@@ -1,9 +1,9 @@
-package org.example.integration
+package vaka.com.integration
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import org.example.data.repository.ProductRepository
-import org.example.data.tables.Products
+import vaka.com.data.repository.ProductRepository
+import vaka.com.data.tables.Products
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

@@ -1,11 +1,11 @@
-package org.example.service
+package vaka.com.service
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import org.example.data.repository.UserRepository
-import org.example.domain.AuthResponse
-import org.example.domain.User
-import org.example.domain.UserRole
+import vaka.com.data.repository.UserRepository
+import vaka.com.domain.AuthResponse
+import vaka.com.domain.User
+import vaka.com.domain.UserRole
 import java.util.*
 
 class AuthService(

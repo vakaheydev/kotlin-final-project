@@ -1,10 +1,10 @@
-package org.example.config
+package vaka.com.config
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import org.example.data.repository.*
-import org.example.routes.*
-import org.example.service.*
+import vaka.com.data.repository.*
+import vaka.com.routes.*
+import vaka.com.service.*
 
 fun Application.configureRouting() {
     val config = environment.config

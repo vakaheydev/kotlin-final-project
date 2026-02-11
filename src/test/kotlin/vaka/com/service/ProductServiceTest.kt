@@ -1,9 +1,9 @@
-package org.example.service
+package vaka.com.service
 
 import io.mockk.*
 import kotlinx.serialization.json.Json
-import org.example.data.repository.ProductRepository
-import org.example.domain.Product
+import vaka.com.data.repository.ProductRepository
+import vaka.com.domain.Product
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import kotlin.test.assertEquals

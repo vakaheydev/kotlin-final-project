@@ -1,4 +1,4 @@
-package org.example.routes
+package vaka.com.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -6,8 +6,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import org.example.domain.UserCredentials
-import org.example.service.AuthService
+import vaka.com.domain.UserCredentials
+import vaka.com.service.AuthService
 
 @Serializable
 data class ErrorResponse(val error: String)

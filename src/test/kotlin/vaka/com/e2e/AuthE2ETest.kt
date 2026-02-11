@@ -1,13 +1,10 @@
-package org.example.e2e
+package vaka.com.e2e
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kotlinx.serialization.json.Json
-import org.example.domain.AuthResponse
-import org.example.domain.UserCredentials
-import org.example.module
+import vaka.com.module
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

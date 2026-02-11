@@ -1,4 +1,4 @@
-package org.example.routes
+package vaka.com.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -7,12 +7,12 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import org.example.config.userRole
-import org.example.data.repository.OrderRepository
-import org.example.domain.CreateProductRequest
-import org.example.domain.UpdateProductRequest
-import org.example.domain.UserRole
-import org.example.service.ProductService
+import vaka.com.config.userRole
+import vaka.com.data.repository.OrderRepository
+import vaka.com.domain.CreateProductRequest
+import vaka.com.domain.UpdateProductRequest
+import vaka.com.domain.UserRole
+import vaka.com.service.ProductService
 
 @Serializable
 data class StatsResponse(

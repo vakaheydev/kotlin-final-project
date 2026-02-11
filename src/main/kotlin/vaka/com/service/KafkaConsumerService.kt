@@ -1,4 +1,4 @@
-package org.example.service
+package vaka.com.service
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

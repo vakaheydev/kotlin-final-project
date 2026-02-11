@@ -1,4 +1,4 @@
-package org.example.service
+package vaka.com.service
 
 import io.lettuce.core.RedisClient
 import io.lettuce.core.api.StatefulRedisConnection

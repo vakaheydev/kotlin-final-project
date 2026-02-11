@@ -1,4 +1,4 @@
-package org.example.config
+package vaka.com.config
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

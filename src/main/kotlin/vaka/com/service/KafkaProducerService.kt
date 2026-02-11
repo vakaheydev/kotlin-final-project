@@ -1,4 +1,4 @@
-package org.example.service
+package vaka.com.service
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString

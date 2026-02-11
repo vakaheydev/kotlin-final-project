@@ -1,8 +1,8 @@
-package org.example.config
+package vaka.com.config
 
 import io.ktor.server.application.*
-import org.example.data.repository.UserRepository
-import org.example.domain.UserRole
+import vaka.com.data.repository.UserRepository
+import vaka.com.domain.UserRole
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**

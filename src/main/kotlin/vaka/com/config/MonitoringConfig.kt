@@ -1,4 +1,4 @@
-package org.example.config
+package vaka.com.config
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.calllogging.*

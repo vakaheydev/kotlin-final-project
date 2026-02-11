@@ -1,4 +1,4 @@
-package org.example.domain
+package vaka.com.domain
 
 import kotlinx.serialization.Serializable
 import java.math.BigDecimal

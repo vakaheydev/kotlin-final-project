@@ -1,10 +1,10 @@
-package org.example.service
+package vaka.com.service
 
-import org.example.data.repository.AuditLogRepository
-import org.example.data.repository.OrderRepository
-import org.example.data.repository.ProductRepository
-import org.example.domain.CreateOrderRequest
-import org.example.domain.Order
+import vaka.com.data.repository.AuditLogRepository
+import vaka.com.data.repository.OrderRepository
+import vaka.com.data.repository.ProductRepository
+import vaka.com.domain.CreateOrderRequest
+import vaka.com.domain.Order
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class OrderService(
