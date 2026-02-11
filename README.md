@@ -81,9 +81,15 @@ docker-compose up -d
 - PostgreSQL (порт 5433) 
 - Redis (порт 6379)
 - Kafka + Zookeeper (порт 9092)
+- **Kafka UI** (порт 8090) - веб-интерфейс для мониторинга Kafka
 - Приложение (порт 8080)
 
 3. Приложение будет доступно по адресу: `http://localhost:8080`
+
+### Веб-интерфейсы
+
+- **API Swagger:** `http://localhost:8080/swagger`
+- **Kafka UI:** `http://localhost:8090` - просмотр топиков, сообщений, consumer groups
 
 ### Учётная запись администратора по умолчанию
 
