@@ -11,7 +11,7 @@ class ProductService(
 ) {
 
     fun getProduct(id: Long): Product? {
-        // Пытаемся получить из кэша
+        // Проверяем кеш
         val cacheKey = "product:$id"
         val cached = cacheService.get(cacheKey) { json ->
             Json.decodeFromString<Product>(json)
@@ -21,10 +21,10 @@ class ProductService(
             return cached
         }
 
-        // Если в кэше нет, берем из БД
+        // Не нашли - идем в базу
         val product = productRepository.findById(id) ?: return null
 
-        // Кэшируем на 5 минут
+        // Сохраняем в кеш на 5 минут
         cacheService.setJson(cacheKey, product, 300)
 
         return product
@@ -43,7 +43,7 @@ class ProductService(
         val priceDecimal = price?.let { BigDecimal(it) }
         val updated = productRepository.update(id, name, description, priceDecimal, stock)
 
-        // Очищаем кэш при обновлении
+        // Инвалидируем кеш
         if (updated != null) {
             cacheService.delete("product:$id")
         }

@@ -31,11 +31,9 @@ class ProductE2ETest {
             module()
         }
 
-        // Получаем список продуктов
         val productsResponse = client.get("/products")
         val productsBody = productsResponse.bodyAsText()
 
-        // Если есть продукты, проверяем получение по ID
         if (productsBody != "[]" && productsBody.contains("\"id\":")) {
             val productId = productsBody
                 .substringAfter("\"id\":")
@@ -45,7 +43,6 @@ class ProductE2ETest {
             val response = client.get("/products/$productId")
             assertEquals(HttpStatusCode.OK, response.status)
         } else {
-            // Если товаров нет - просто проверяем что список пустой
             assertEquals("[]", productsBody)
         }
     }

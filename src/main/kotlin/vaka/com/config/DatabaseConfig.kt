@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.Database
 fun Application.configureDatabase() {
     val config = environment.config
 
-    // Читаем из переменных окружения или из config файла
+    // Берем настройки из env или конфига
     val dbDriver = System.getenv("DB_DRIVER") ?: config.propertyOrNull("database.driver")?.getString() ?: "org.postgresql.Driver"
     val dbUrl = System.getenv("DB_URL") ?: config.propertyOrNull("database.url")?.getString() ?: "jdbc:postgresql://localhost:5433/shop_db"
     val dbUser = System.getenv("DB_USER") ?: config.propertyOrNull("database.user")?.getString() ?: "postgres"
@@ -32,19 +32,23 @@ fun Application.configureDatabase() {
     val dataSource = HikariDataSource(dbConfig)
     Database.connect(dataSource)
 
-    // Запускаем Flyway миграции
+    // Применяем миграции
     log.info("Running Flyway migrations...")
     val flyway = Flyway.configure()
         .dataSource(dataSource)
         .locations("classpath:db/migration")
         .baselineOnMigrate(true)
+        .validateOnMigrate(true)
+        .sqlMigrationPrefix("V")
+        .sqlMigrationSeparator("__")
+        .sqlMigrationSuffixes(".sql")
         .load()
 
     try {
         val migrationsApplied = flyway.migrate()
-        log.info("Flyway migrations completed successfully. Applied ${migrationsApplied.migrationsExecuted} migration(s)")
+        log.info("✅ Flyway migrations completed successfully. Applied ${migrationsApplied.migrationsExecuted} migration(s)")
     } catch (e: Exception) {
-        log.error("Flyway migration failed: ${e.message}", e)
+        log.error("❌ Flyway migration failed: ${e.message}", e)
         throw e
     }
 }

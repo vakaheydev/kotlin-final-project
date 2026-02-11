@@ -5,14 +5,11 @@ import vaka.com.data.repository.UserRepository
 import vaka.com.domain.UserRole
 import org.jetbrains.exposed.sql.transactions.transaction
 
-/**
- * Инициализатор данных приложения.
- * Создает администратора по умолчанию при первом запуске, если его еще нет.
- */
+// Создает дефолтного админа при первом запуске
 fun Application.initializeData() {
     val config = environment.config
 
-    // Читаем данные админа из конфигурации или используем значения по умолчанию
+    // Читаем настройки админа
     val adminEmail = System.getenv("ADMIN_EMAIL")
         ?: config.propertyOrNull("admin.email")?.getString()
         ?: "admin@shop.com"
@@ -24,11 +21,11 @@ fun Application.initializeData() {
     val userRepository = UserRepository()
 
     transaction {
-        // Проверяем, существует ли уже администратор
+        // Проверяем есть ли уже админ
         val existingAdmin = userRepository.findByEmail(adminEmail)
 
         if (existingAdmin == null) {
-            // Создаем администратора по умолчанию
+            // Создаем админа
             val admin = userRepository.create(
                 email = adminEmail,
                 password = adminPassword,
@@ -36,15 +33,14 @@ fun Application.initializeData() {
             )
 
             if (admin != null) {
-                log.info("✅ Default admin user created successfully:")
-                log.info("   Email: $adminEmail")
-                log.info("   Password: $adminPassword")
-                log.info("   ⚠️  IMPORTANT: Change the default password in production!")
+                log.info("Default admin user created successfully:")
+                log.info("Email: $adminEmail")
+                log.info("Password: $adminPassword")
             } else {
-                log.error("❌ Failed to create default admin user")
+                log.error("Failed to create default admin user")
             }
         } else {
-            log.info("ℹ️  Admin user already exists (${existingAdmin.email})")
+            log.info("ℹAdmin user already exists (${existingAdmin.email})")
         }
     }
 }

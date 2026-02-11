@@ -17,7 +17,7 @@ class OrderService(
 
     fun createOrder(userId: Long, request: CreateOrderRequest): Result<Order> = transaction {
         try {
-            // Проверяем наличие товаров и резервируем их
+            // Проверяем что все товары есть в наличии
             for (item in request.items) {
                 val product = productRepository.findById(item.productId)
                     ?: return@transaction Result.failure(Exception("Product ${item.productId} not found"))
@@ -27,20 +27,20 @@ class OrderService(
                 }
             }
 
-            // Уменьшаем количество товара на складе
+            // Списываем товары со склада
             for (item in request.items) {
                 val success = productRepository.decreaseStock(item.productId, item.quantity)
                 if (!success) {
                     return@transaction Result.failure(Exception("Failed to decrease stock"))
                 }
-                // Очищаем кэш товара
+                // Нужно сбросить кеш этого товара
                 cacheService.delete("product:${item.productId}")
             }
 
-            // Создаем заказ
+            // Сохраняем заказ
             val order = orderRepository.create(userId, request.items)
 
-            // Логируем создание заказа
+            // Пишем в audit log
             auditLogRepository.log(
                 userId = userId,
                 action = "CREATE_ORDER",
@@ -49,10 +49,10 @@ class OrderService(
                 details = "Created order with ${request.items.size} items, total: ${order.totalPrice}"
             )
 
-            // Кэшируем заказ
+            // Кешируем заказ на 10 минут
             cacheService.setJson("order:${order.id}", order, 600)
 
-            // Отправляем событие в Kafka
+            // Шлем событие в кафку
             kafkaProducerService.sendOrderEvent(
                 OrderEvent(
                     orderId = order.id,
@@ -87,7 +87,7 @@ class OrderService(
         val cancelled = orderRepository.cancel(id, userId)
 
         if (cancelled) {
-            // Логируем отмену
+            // Сохраняем в audit
             auditLogRepository.log(
                 userId = userId,
                 action = "CANCEL_ORDER",
@@ -96,10 +96,10 @@ class OrderService(
                 details = "Order cancelled by user"
             )
 
-            // Очищаем кэш
+            // Удаляем из кеша
             cacheService.delete("order:$id")
 
-            // Отправляем событие в Kafka
+            // Уведомляем через кафку
             kafkaProducerService.sendOrderEvent(
                 OrderEvent(
                     orderId = id,

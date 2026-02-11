@@ -75,9 +75,8 @@ class KafkaConsumerService(
     }
 
     private fun sendEmailNotification(userId: Long, subject: String, body: String) {
-        // Заглушка для отправки email
+        // TODO: тут потом надо прикрутить реальную отправку email
         logger.info("Sending email to user $userId: Subject='$subject', Body='$body'")
-        // В реальном приложении здесь была бы интеграция с email-сервисом
     }
 
     fun close() {

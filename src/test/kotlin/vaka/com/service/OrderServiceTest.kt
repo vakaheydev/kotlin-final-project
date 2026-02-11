@@ -42,7 +42,7 @@ class OrderServiceTest {
         every { productRepository.findById(productId) } returns product
 
         val request = CreateOrderRequest(
-            items = listOf(OrderItemRequest(productId, 10)) // Запрашиваем больше, чем есть
+            items = listOf(OrderItemRequest(productId, 10)) // Заказываем больше чем есть
         )
 
         val result = orderService.createOrder(userId, request)

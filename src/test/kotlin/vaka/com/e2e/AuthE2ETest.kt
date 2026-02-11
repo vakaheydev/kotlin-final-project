@@ -51,14 +51,12 @@ class AuthE2ETest {
             module()
         }
 
-        // Сначала регистрируем пользователя
         val randomEmail = "login${System.currentTimeMillis()}@example.com"
         client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             setBody("""{"email":"$randomEmail","password":"password123"}""")
         }
 
-        // Затем логинимся
         val response = client.post("/auth/login") {
             contentType(ContentType.Application.Json)
             setBody("""{"email":"$randomEmail","password":"password123"}""")
