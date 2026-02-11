@@ -3,10 +3,8 @@ package vaka.com.config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
-import vaka.com.data.tables.*
+import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.configureDatabase() {
     val config = environment.config
@@ -34,9 +32,20 @@ fun Application.configureDatabase() {
     val dataSource = HikariDataSource(dbConfig)
     Database.connect(dataSource)
 
-    // Создаем таблицы, если их нет
-    transaction {
-        SchemaUtils.create(Users, Products, Orders, OrderItems, AuditLogs)
+    // Запускаем Flyway миграции
+    log.info("Running Flyway migrations...")
+    val flyway = Flyway.configure()
+        .dataSource(dataSource)
+        .locations("classpath:db/migration")
+        .baselineOnMigrate(true)
+        .load()
+
+    try {
+        val migrationsApplied = flyway.migrate()
+        log.info("Flyway migrations completed successfully. Applied ${migrationsApplied.migrationsExecuted} migration(s)")
+    } catch (e: Exception) {
+        log.error("Flyway migration failed: ${e.message}", e)
+        throw e
     }
 }
 
