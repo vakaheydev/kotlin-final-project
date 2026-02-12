@@ -40,7 +40,7 @@ fun Application.initializeData() {
                 log.error("Failed to create default admin user")
             }
         } else {
-            log.info("ℹAdmin user already exists (${existingAdmin.email})")
+            log.info("Admin user already exists (${existingAdmin.email})")
         }
     }
 }

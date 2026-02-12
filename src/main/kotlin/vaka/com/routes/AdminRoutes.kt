@@ -17,7 +17,8 @@ import vaka.com.service.ProductService
 @Serializable
 data class StatsResponse(
     val totalOrders: Long,
-    val totalRevenue: String
+    val totalRevenue: String,
+    val orders: List<vaka.com.domain.Order>
 )
 
 fun Route.adminRoutes(productService: ProductService, orderRepository: OrderRepository) {
@@ -65,6 +66,28 @@ fun Route.adminRoutes(productService: ProductService, orderRepository: OrderRepo
 
                 val request = call.receive<UpdateProductRequest>()
 
+                // Валидация price если указан
+                if (request.price != null) {
+                    try {
+                        request.price.toBigDecimal()
+                    } catch (_: NumberFormatException) {
+                        call.respond(HttpStatusCode.BadRequest, ErrorResponse("Invalid price format. Price must be a valid number"))
+                        return@put
+                    }
+                }
+
+                // Валидация stock если указан
+                if (request.stock != null && request.stock < 0) {
+                    call.respond(HttpStatusCode.BadRequest, ErrorResponse("Stock cannot be negative"))
+                    return@put
+                }
+
+                // Валидация name если указан
+                if (request.name != null && request.name.isBlank()) {
+                    call.respond(HttpStatusCode.BadRequest, ErrorResponse("Product name cannot be empty"))
+                    return@put
+                }
+
                 val product = productService.updateProduct(
                     id,
                     request.name,
@@ -95,12 +118,17 @@ fun Route.adminRoutes(productService: ProductService, orderRepository: OrderRepo
                     return@delete
                 }
 
-                val deleted = productService.deleteProduct(id)
+                val result = productService.deleteProduct(id)
 
-                if (deleted) {
+                result.onSuccess {
                     call.respond(HttpStatusCode.OK, mapOf("message" to "Product deleted successfully"))
-                } else {
-                    call.respond(HttpStatusCode.NotFound, ErrorResponse("Product not found"))
+                }.onFailure { error ->
+                    val statusCode = if (error.message?.contains("not found") == true) {
+                        HttpStatusCode.NotFound
+                    } else {
+                        HttpStatusCode.Conflict
+                    }
+                    call.respond(statusCode, ErrorResponse(error.message ?: "Failed to delete product"))
                 }
             }
 
@@ -114,8 +142,9 @@ fun Route.adminRoutes(productService: ProductService, orderRepository: OrderRepo
 
                 val totalOrders = orderRepository.countAll()
                 val totalRevenue = orderRepository.getTotalRevenue()
+                val allOrders = orderRepository.findAll()
 
-                call.respond(HttpStatusCode.OK, StatsResponse(totalOrders, totalRevenue.toString()))
+                call.respond(HttpStatusCode.OK, StatsResponse(totalOrders, totalRevenue.toString(), allOrders))
             }
         }
     }

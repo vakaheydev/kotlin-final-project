@@ -107,7 +107,34 @@ class OrderRepository {
                 )
             }
     }
-    
+
+    fun findAll(): List<Order> = transaction {
+        Orders.selectAll()
+            .map { orderRow ->
+                val orderId = orderRow[Orders.id].value
+                val items = (OrderItems innerJoin Products)
+                    .selectAll().where { OrderItems.orderId eq orderId }
+                    .map { row ->
+                        OrderItem(
+                            id = row[OrderItems.id].value,
+                            productId = row[OrderItems.productId].value,
+                            productName = row[Products.name],
+                            quantity = row[OrderItems.quantity],
+                            price = row[OrderItems.price].toString()
+                        )
+                    }
+
+                Order(
+                    id = orderId,
+                    userId = orderRow[Orders.userId].value,
+                    status = OrderStatus.valueOf(orderRow[Orders.status]),
+                    totalPrice = orderRow[Orders.totalPrice].toString(),
+                    items = items,
+                    createdAt = orderRow[Orders.createdAt].toString()
+                )
+            }
+    }
+
     fun cancel(id: Long, userId: Long): Boolean = transaction {
         val order = findById(id) ?: return@transaction false
         
@@ -130,8 +157,9 @@ class OrderRepository {
     }
     
     fun getTotalRevenue(): BigDecimal = transaction {
-        Orders.selectAll().where { Orders.status eq OrderStatus.COMPLETED.name }
-            .sumOf { it[Orders.totalPrice] }
+        Orders.selectAll().where {
+            (Orders.status eq OrderStatus.COMPLETED.name) or (Orders.status eq OrderStatus.PENDING.name)
+        }.sumOf { it[Orders.totalPrice] }
     }
 }
 

@@ -66,14 +66,58 @@ class ProductServiceTest {
     @Test
     fun `deleteProduct should clear cache after deletion`() {
         val productId = 1L
+        val product = Product(
+            id = productId,
+            name = "Test Product",
+            description = "Description",
+            price = "100.00",
+            stock = 10,
+            createdAt = "2024-01-01",
+            updatedAt = "2024-01-01"
+        )
 
+        every { productRepository.findById(productId) } returns product
         every { productRepository.delete(productId) } returns true
-        every { cacheService.delete(any()) } returns Unit
+        every { cacheService.delete(any()) } just Runs
 
         val result = productService.deleteProduct(productId)
 
-        assertEquals(true, result)
+        assert(result.isSuccess)
         verify { cacheService.delete("product:$productId") }
+    }
+
+    @Test
+    fun `deleteProduct should return failure when product not found`() {
+        val productId = 999L
+
+        every { productRepository.findById(productId) } returns null
+
+        val result = productService.deleteProduct(productId)
+
+        assert(result.isFailure)
+        assertEquals("Product not found", result.exceptionOrNull()?.message)
+    }
+
+    @Test
+    fun `deleteProduct should return failure when product is referenced in orders`() {
+        val productId = 1L
+        val product = Product(
+            id = productId,
+            name = "Test Product",
+            description = "Description",
+            price = "100.00",
+            stock = 10,
+            createdAt = "2024-01-01",
+            updatedAt = "2024-01-01"
+        )
+
+        every { productRepository.findById(productId) } returns product
+        every { productRepository.delete(productId) } returns false
+
+        val result = productService.deleteProduct(productId)
+
+        assert(result.isFailure)
+        assertEquals("Cannot delete product. It is referenced in existing orders", result.exceptionOrNull()?.message)
     }
 }
 

@@ -44,7 +44,17 @@ class ProductRepository {
     }
 
     fun delete(id: Long): Boolean = transaction {
-        Products.deleteWhere { Products.id eq id } > 0
+        try {
+            Products.deleteWhere { Products.id eq id } > 0
+        } catch (e: Exception) {
+            // Если товар используется в заказах, вернем false
+            if (e.message?.contains("foreign key constraint") == true ||
+                e.message?.contains("fk_order_items_product") == true) {
+                false
+            } else {
+                throw e
+            }
+        }
     }
 
     fun decreaseStock(id: Long, quantity: Int): Boolean = transaction {

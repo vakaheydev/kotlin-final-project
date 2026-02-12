@@ -51,14 +51,20 @@ class ProductService(
         return updated
     }
 
-    fun deleteProduct(id: Long): Boolean {
+    fun deleteProduct(id: Long): Result<Unit> {
+        // Проверяем существует ли товар
+        if (productRepository.findById(id) == null) {
+            return Result.failure(Exception("Product not found"))
+        }
+
         val deleted = productRepository.delete(id)
 
         if (deleted) {
             cacheService.delete("product:$id")
+            return Result.success(Unit)
+        } else {
+            return Result.failure(Exception("Cannot delete product. It is referenced in existing orders"))
         }
-
-        return deleted
     }
 }
 
