@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class AuthE2ETest {
+class AuthE2ETest : BaseE2ETest() {
 
     @Test
     fun `should register new user and return token`() = testApplication {

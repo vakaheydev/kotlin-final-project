@@ -10,7 +10,7 @@ abstract class BaseIntegrationTest {
         @JvmStatic
         @BeforeAll
         fun configureTestcontainers() {
-            // Настройки для Docker Desktop
+            // Настройки для Docker Desktop на винде
             System.setProperty("testcontainers.reuse.enable", "false")
             System.setProperty("testcontainers.ryuk.disabled", "false")
 

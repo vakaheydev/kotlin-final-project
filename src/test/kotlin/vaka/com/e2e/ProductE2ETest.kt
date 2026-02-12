@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ProductE2ETest {
+class ProductE2ETest : BaseE2ETest() {
 
     @Test
     fun `should get all products`() = testApplication {

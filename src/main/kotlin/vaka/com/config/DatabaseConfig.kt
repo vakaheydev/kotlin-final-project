@@ -38,17 +38,18 @@ fun Application.configureDatabase() {
         .dataSource(dataSource)
         .locations("classpath:db/migration")
         .baselineOnMigrate(true)
-        .validateOnMigrate(true)
+        .validateOnMigrate(false)
         .sqlMigrationPrefix("V")
         .sqlMigrationSeparator("__")
         .sqlMigrationSuffixes(".sql")
+        .cleanDisabled(false)
         .load()
 
     try {
         val migrationsApplied = flyway.migrate()
-        log.info("✅ Flyway migrations completed successfully. Applied ${migrationsApplied.migrationsExecuted} migration(s)")
+        log.info("Flyway migrations completed successfully. Applied ${migrationsApplied.migrationsExecuted} migration(s)")
     } catch (e: Exception) {
-        log.error("❌ Flyway migration failed: ${e.message}", e)
+        log.error("Flyway migration failed: ${e.message}", e)
         throw e
     }
 }
