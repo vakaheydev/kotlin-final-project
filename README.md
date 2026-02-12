@@ -74,7 +74,7 @@ cd kotlin-final-project
 
 2. Запустите все сервисы:
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Это запустит:
@@ -102,7 +102,7 @@ docker-compose up -d
 
 1. Запустите только инфраструктуру:
 ```bash
-docker-compose up -d postgres redis zookeeper kafka
+docker compose up -d postgres redis zookeeper kafka
 ```
 
 2. Запустите приложение:
@@ -231,35 +231,14 @@ Flyway автоматически применяет все миграции п�
 ALTER TABLE users ADD COLUMN phone VARCHAR(20);
 ```
 
-### Администратор по умолчанию
-
-При первом запуске автоматически создается администратор:
-- Email: `admin@shop.com`
-- Пароль: `admin123`
-
-Для создания дополнительных администраторов:
-
-```sql
-UPDATE users SET role = 'ADMIN' WHERE email = 'new_admin@example.com';
-```
-
 ### Просмотр логов
 
 ```bash
-docker-compose logs -f app
+docker compose logs -f app
 ```
 
 ### Остановка сервисов
 
 ```bash
-docker-compose down
+docker compose down
 ```
-
-## Лицензия
-
-MIT License
-
-## Контакты
-
-По вопросам обращайтесь: support@shop.com
-
