@@ -69,12 +69,30 @@ class OrderService(
     }
 
     fun getOrder(id: Long, userId: Long): Order? {
+        // Сначала проверяем кеш
+        val cacheKey = "order:$id"
+        val cached = cacheService.get(cacheKey) { json ->
+            kotlinx.serialization.json.Json.decodeFromString<Order>(json)
+        }
+
+        if (cached != null) {
+            // Проверяем, что заказ принадлежит пользователю
+            if (cached.userId != userId) {
+                return null
+            }
+            return cached
+        }
+
+        // Не нашли в кеше - идем в базу
         val order = orderRepository.findById(id) ?: return null
 
         // Проверяем, что заказ принадлежит пользователю
         if (order.userId != userId) {
             return null
         }
+
+        // Кешируем заказ на 10 минут
+        cacheService.setJson(cacheKey, order, 600)
 
         return order
     }

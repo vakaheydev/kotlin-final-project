@@ -97,9 +97,6 @@ docker-compose up -d
 - **Email:** `admin@shop.com`
 - **Пароль:** `admin123`
 
-⚠️ **ВАЖНО:** Измените пароль в production! 
-
-Подробнее см. [ADMIN_GUIDE.md](ADMIN_GUIDE.md)
 
 ### Локальный запуск для разработки
 
