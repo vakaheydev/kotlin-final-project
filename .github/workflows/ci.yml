@@ -33,7 +33,7 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: Build with Gradle
-      run: ./gradlew build --no-daemon
+      run: ./gradlew build -x test --no-daemon
 
     - name: Run tests
       run: ./gradlew test --no-daemon
@@ -44,6 +44,14 @@ jobs:
       with:
         name: test-report-html
         path: build/reports/tests/test/
+
+    - name: Publish test report to GitHub Pages
+      if: always() && github.ref == 'refs/heads/master'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/reports/tests/test
+        destination_dir: test-reports/${{ github.run_number }}
 
     - name: Build Docker image
       run: docker build -t kotlin-shop-api:latest .
