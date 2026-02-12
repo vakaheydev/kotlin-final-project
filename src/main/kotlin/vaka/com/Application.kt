@@ -30,8 +30,8 @@ fun Application.module() {
     // Запускаем Kafka consumer в фоновом режиме
     val config = environment.config
     val kafkaConsumer = KafkaConsumerService(
-        bootstrapServers = System.getenv("KAFKA_BOOTSTRAP_SERVERS") ?: config.propertyOrNull("kafka.bootstrapServers")?.getString() ?: "localhost:9092",
-        topic = System.getenv("KAFKA_TOPIC") ?: config.propertyOrNull("kafka.topic")?.getString() ?: "order-events"
+        bootstrapServers = System.getProperty("KAFKA_BOOTSTRAP_SERVERS") ?: System.getenv("KAFKA_BOOTSTRAP_SERVERS") ?: config.propertyOrNull("kafka.bootstrapServers")?.getString() ?: "localhost:9092",
+        topic = System.getProperty("KAFKA_TOPIC") ?: System.getenv("KAFKA_TOPIC") ?: config.propertyOrNull("kafka.topic")?.getString() ?: "order-events"
     )
 
     launch {

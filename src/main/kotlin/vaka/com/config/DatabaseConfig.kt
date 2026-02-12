@@ -9,12 +9,12 @@ import org.jetbrains.exposed.sql.Database
 fun Application.configureDatabase() {
     val config = environment.config
 
-    // Берем настройки из env или конфига
-    val dbDriver = System.getenv("DB_DRIVER") ?: config.propertyOrNull("database.driver")?.getString() ?: "org.postgresql.Driver"
-    val dbUrl = System.getenv("DB_URL") ?: config.propertyOrNull("database.url")?.getString() ?: "jdbc:postgresql://localhost:5433/shop_db"
-    val dbUser = System.getenv("DB_USER") ?: config.propertyOrNull("database.user")?.getString() ?: "postgres"
-    val dbPassword = System.getenv("DB_PASSWORD") ?: config.propertyOrNull("database.password")?.getString() ?: "postgres"
-    val maxPoolSize = System.getenv("DB_MAX_POOL_SIZE")?.toIntOrNull() ?: config.propertyOrNull("database.maxPoolSize")?.getString()?.toIntOrNull() ?: 10
+    // Берем настройки из system properties (для тестов), затем env или конфига
+    val dbDriver = System.getProperty("DB_DRIVER") ?: System.getenv("DB_DRIVER") ?: config.propertyOrNull("database.driver")?.getString() ?: "org.postgresql.Driver"
+    val dbUrl = System.getProperty("DB_URL") ?: System.getenv("DB_URL") ?: config.propertyOrNull("database.url")?.getString() ?: "jdbc:postgresql://localhost:5433/shop_db"
+    val dbUser = System.getProperty("DB_USER") ?: System.getenv("DB_USER") ?: config.propertyOrNull("database.user")?.getString() ?: "postgres"
+    val dbPassword = System.getProperty("DB_PASSWORD") ?: System.getenv("DB_PASSWORD") ?: config.propertyOrNull("database.password")?.getString() ?: "postgres"
+    val maxPoolSize = System.getProperty("DB_MAX_POOL_SIZE")?.toIntOrNull() ?: System.getenv("DB_MAX_POOL_SIZE")?.toIntOrNull() ?: config.propertyOrNull("database.maxPoolSize")?.getString()?.toIntOrNull() ?: 10
 
     log.info("Database configuration: driver=$dbDriver, url=$dbUrl, user=$dbUser, maxPoolSize=$maxPoolSize")
 
