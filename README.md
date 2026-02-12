@@ -201,10 +201,19 @@ jwt {
 
 ## CI/CD
 
-GitHub Actions workflow автоматически:
-- Собирает проект
-- Запускает тесты
+GitHub Actions workflow:
+- Собирает проект с кэшированием зависимостей
+- Запускуает все тесты (Unit + Integration + E2E)
 - Создает Docker образ
+- Публикует HTML отчеты тестов
+
+### Просмотр результатов тестов
+
+После каждого push в `master` или `develop`:
+
+1. **GitHub Actions** → выбираете нужный workflow run
+2. **Artifacts** → скачиваете `test-report-html.zip`
+3. Распаковываете и открываете `index.html` в браузере
 
 ## Разработка
 
